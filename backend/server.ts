@@ -1,5 +1,5 @@
-import { env } from "./utils/env.ts";
+import { env } from './utils/env.ts'
 
-const hello: string = 'Hello, World!!';
+const hello: string = 'Hello, World!!'
 
-console.log({hello, app_name: env.APP_NAME});
+console.log({ hello, app_name: env.APP_NAME })
