@@ -11,6 +11,7 @@ const envSchema = z.object({
     })
     .default('3333'),
   NODE_ENV: z.enum(['development', 'production']).default('development'),
+  MONGO_CONNECTION_STRING: z.string(),
 })
 
 type Env = z.infer<typeof envSchema>
