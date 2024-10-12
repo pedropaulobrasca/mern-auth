@@ -6,6 +6,14 @@ meta {
 
 post {
   url: {{baseUrl}}{{baseUrlAuth}}/signup
-  body: none
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "name": "Pedro",
+    "email": "admin@mern-auth.app",
+    "password": "123asd"
+  }
 }
