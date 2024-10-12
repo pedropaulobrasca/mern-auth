@@ -1,6 +1,8 @@
+import bcrypt from 'bcryptjs'
 import mongoose from 'mongoose'
 
 import type { User } from '../../shared/user.type.ts'
+import { calculateExpiresAt } from '../utils/auth.utils.ts'
 
 const userSchema = new mongoose.Schema<User>(
   {
@@ -16,6 +18,19 @@ const userSchema = new mongoose.Schema<User>(
   },
   { timestamps: true },
 )
+
+userSchema.pre('save', async function (next) {
+  if (this.isModified('password')) {
+    const salt = await bcrypt.genSalt(10)
+    this.password = await bcrypt.hash(this.password, salt)
+  }
+
+  if (this.verificationToken && !this.verificationTokenExpiresAt) {
+    this.verificationTokenExpiresAt = calculateExpiresAt(24)
+  }
+
+  next()
+})
 
 const UserModel = mongoose.model<User>('User', userSchema)
 
