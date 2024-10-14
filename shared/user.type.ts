@@ -12,3 +12,9 @@ export type User = {
   createdAt: Date
   updatedAt: Date
 }
+
+export type CreateUser = {
+  name: string
+  email: string
+  password: string
+}

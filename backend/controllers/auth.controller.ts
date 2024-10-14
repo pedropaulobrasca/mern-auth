@@ -1,7 +1,7 @@
 import type { RequestHandler } from 'express'
 
+import { UserDAO } from '../models/dao/user.dao.ts'
 import { UserDTO } from '../models/dto/user.dto.ts'
-import UserModel from '../models/user.model.ts'
 import { sendVerificationEmail } from '../services/mailtrap/mailtrap.service.ts'
 import {
   generateToken,
@@ -9,11 +9,13 @@ import {
   setTokenCookie,
 } from '../utils/auth.utils.ts'
 
+const userDao = new UserDAO()
+
 export const signup: RequestHandler = async (req, res): Promise<void> => {
   try {
     const { name, email, password } = req.body
 
-    const userExists = await UserModel.findOne({ email })
+    const userExists = await userDao.findByEmail(email)
 
     if (userExists) {
       res.status(400).json({
@@ -24,14 +26,14 @@ export const signup: RequestHandler = async (req, res): Promise<void> => {
 
     const verificationToken = generateVerificationToken()
 
-    const newUser = new UserModel({
+    const userToBeCreate = {
       name,
       email,
       password,
       verificationToken,
-    })
+    }
 
-    await newUser.save()
+    const newUser = await userDao.create(userToBeCreate)
 
     const token = generateToken(newUser._id.toString())
     setTokenCookie(res, token)
