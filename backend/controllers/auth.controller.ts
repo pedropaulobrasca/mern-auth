@@ -1,8 +1,13 @@
 import type { RequestHandler } from 'express'
 
+import { UserDTO } from '../models/dto/user.dto.ts'
 import UserModel from '../models/user.model.ts'
 import { sendVerificationEmail } from '../services/mailtrap/mailtrap.service.ts'
-import { generateVerificationToken } from '../utils/auth.utils.ts'
+import {
+  generateToken,
+  generateVerificationToken,
+  setTokenCookie,
+} from '../utils/auth.utils.ts'
 
 export const signup: RequestHandler = async (req, res): Promise<void> => {
   try {
@@ -19,8 +24,6 @@ export const signup: RequestHandler = async (req, res): Promise<void> => {
 
     const verificationToken = generateVerificationToken()
 
-    console.log('verificationToken', verificationToken)
-
     const newUser = new UserModel({
       name,
       email,
@@ -30,14 +33,19 @@ export const signup: RequestHandler = async (req, res): Promise<void> => {
 
     await newUser.save()
 
-    // TODO: JWT token
+    const token = generateToken(newUser._id.toString())
+    setTokenCookie(res, token)
 
     await sendVerificationEmail({
       email,
       verificationToken,
     })
 
-    res.status(201).json({ message: 'User created successfully' })
+    res.status(201).json({
+      success: true,
+      message: 'User created successfully',
+      data: UserDTO.toJson(newUser),
+    })
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: 'Internal server error' })
