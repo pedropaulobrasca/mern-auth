@@ -12,6 +12,11 @@ const envSchema = z.object({
     .default('3333'),
   NODE_ENV: z.enum(['development', 'production']).default('development'),
   MONGO_CONNECTION_STRING: z.string(),
+  MAILTRAP_API_TOKEN: z.string(),
+  MAILTRAP_HOST: z.string(),
+  MAILTRAP_SENDER_EMAIL: z.string(),
+  MAILTRAP_SENDER_NAME: z.string(),
+  MAILTRAP_COMPANY_NAME: z.string(),
 })
 
 type Env = z.infer<typeof envSchema>

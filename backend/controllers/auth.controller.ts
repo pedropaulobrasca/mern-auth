@@ -1,6 +1,7 @@
 import type { RequestHandler } from 'express'
 
 import UserModel from '../models/user.model.ts'
+import { sendVerificationEmail } from '../services/mailtrap/mailtrap.service.ts'
 import { generateVerificationToken } from '../utils/auth.utils.ts'
 
 export const signup: RequestHandler = async (req, res): Promise<void> => {
@@ -31,7 +32,10 @@ export const signup: RequestHandler = async (req, res): Promise<void> => {
 
     // TODO: JWT token
 
-    // TODO: Send email with verificationToken
+    await sendVerificationEmail({
+      email,
+      verificationToken,
+    })
 
     res.status(201).json({ message: 'User created successfully' })
   } catch (error) {
