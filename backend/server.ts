@@ -6,6 +6,7 @@ import { morganMiddleware } from './middlewares/morgan.middleware.ts'
 import authRouter from './routes/auth.route.ts'
 import { connectToDatabase } from './utils/db.ts'
 import { env } from './utils/env.ts'
+import { errorHandler } from './utils/error-handler.ts'
 import { logger } from './utils/logger.ts'
 
 const app = express()
@@ -27,6 +28,20 @@ app.get('/health', (req, res) => {
 })
 
 app.use('/api/v1/auth', authRouter)
+
+app.use(
+  (
+    err: Error,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction,
+  ) => {
+    if (res.headersSent) {
+      return next(err)
+    }
+    errorHandler.handleError(err, res)
+  },
+)
 
 app.listen(PORT, () => {
   logger.info(`Server is running on http://localhost:${PORT}`)

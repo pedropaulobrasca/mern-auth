@@ -1,6 +1,8 @@
 import type { NextFunction, Request, RequestHandler, Response } from 'express'
+import expressAsyncHandler from 'express-async-handler'
 import type { ZodSchema } from 'zod'
-import { fromError } from 'zod-validation-error'
+
+import { BadRequestError } from '../errors/bad-request.error.ts'
 
 // Definindo os tipos possíveis de seções do request que serão validadas
 type RequestSchema = 'body' | 'query' | 'params'
@@ -9,16 +11,11 @@ export const validateSchema = (
   schema: ZodSchema,
   requestSection: RequestSchema = 'body',
 ): RequestHandler => {
-  return async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ): Promise<void> => {
-    try {
+  return expressAsyncHandler(
+    async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       // Verificando se a seção de request fornecida é válida
       if (!['body', 'query', 'params'].includes(requestSection)) {
-        res.status(500).send('Invalid request section')
-        return
+        throw new BadRequestError('Invalid request section')
       }
 
       // Validando a seção do request usando o schema fornecido
@@ -26,12 +23,6 @@ export const validateSchema = (
 
       // Se a validação for bem-sucedida, chamar o próximo middleware
       next()
-    } catch (error) {
-      // Caso ocorra um erro na validação, retornar um erro 400 com detalhes
-      res.status(400).json({
-        success: false,
-        message: fromError(error).toString(),
-      })
-    }
-  }
+    },
+  )
 }

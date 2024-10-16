@@ -1,5 +1,7 @@
 import type { RequestHandler } from 'express'
+import expressAsyncHandler from 'express-async-handler'
 
+import { BadRequestError } from '../errors/bad-request.error.ts'
 import { UserDAO } from '../models/dao/user.dao.ts'
 import { UserDTO } from '../models/dto/user.dto.ts'
 import { sendVerificationEmail } from '../services/mailtrap/mailtrap.service.ts'
@@ -8,20 +10,19 @@ import {
   generateVerificationToken,
   setTokenCookie,
 } from '../utils/auth.utils.ts'
+import { logger } from '../utils/logger.ts'
 
 const userDao = new UserDAO()
 
-export const signup: RequestHandler = async (req, res): Promise<void> => {
-  try {
+export const signup: RequestHandler = expressAsyncHandler(
+  async (req, res): Promise<void> => {
     const { name, email, password } = req.body
 
     const userExists = await userDao.findByEmail(email)
 
     if (userExists) {
-      res.status(400).json({
-        message: 'User already exists',
-      })
-      return
+      logger.info('User already exists', { email })
+      throw new BadRequestError('User already exists')
     }
 
     const verificationToken = generateVerificationToken()
@@ -48,8 +49,5 @@ export const signup: RequestHandler = async (req, res): Promise<void> => {
       message: 'User created successfully',
       data: UserDTO.toJson(newUser),
     })
-  } catch (error) {
-    console.error(error)
-    res.status(500).json({ message: 'Internal server error' })
-  }
-}
+  },
+)

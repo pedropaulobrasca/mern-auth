@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 
 import type { User } from '../../shared/user.type.ts'
 import { calculateExpiresAt } from '../utils/auth.utils.ts'
+import { env } from '../utils/env.ts'
 
 const userSchema = new mongoose.Schema<User>(
   {
@@ -21,7 +22,7 @@ const userSchema = new mongoose.Schema<User>(
 
 userSchema.pre('save', async function (next) {
   if (this.isModified('password')) {
-    const salt = await bcrypt.genSalt(10)
+    const salt = await bcrypt.genSalt(Number(env.BCRYPT_SALT_ROUNDS))
     this.password = await bcrypt.hash(this.password, salt)
   }
 
