@@ -28,6 +28,8 @@ const envSchema = z.object({
   BCRYPT_SALT_ROUNDS: z
     .string()
     .refine((salt) => parseInt(salt) >= 10 && parseInt(salt) <= 12),
+
+  LOG_LEVEL: z.enum(['error', 'warn', 'info', 'http', 'debug']),
 })
 
 type Env = z.infer<typeof envSchema>

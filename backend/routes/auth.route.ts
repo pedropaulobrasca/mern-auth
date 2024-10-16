@@ -8,6 +8,4 @@ const router = Router()
 
 router.post('/signup', validateSchema(signupSchema), signup)
 
-console.log(`🔒 Auth routes loaded with ${router.stack.length} routes`)
-
 export default router

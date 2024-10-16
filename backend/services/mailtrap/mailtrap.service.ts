@@ -1,6 +1,7 @@
 import { MailtrapClient } from 'mailtrap'
 
 import { env } from '../../utils/env.ts'
+import { logger } from '../../utils/logger.ts'
 import { VERIFICATION_EMAIL_TEMPLATE } from './mailtrap.templates.ts'
 
 const TOKEN = env.MAILTRAP_API_TOKEN
@@ -38,7 +39,7 @@ const sendEmail = async ({
       category,
       html,
     })
-    console.log('📨 Email sent successfully!')
+    logger.info('📨 Email sent successfully!')
   } catch (error) {
     console.error(error)
     throw new Error('⛔ Failed to send email')
