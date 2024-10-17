@@ -1,12 +1,12 @@
 meta {
-  name: verify-email
+  name: resend-verification-email
   type: http
   seq: 3
 }
 
 post {
   url: {{baseUrl}}{{baseUrlAuth}}/verify-email
-  body: json
+  body: none
   auth: none
 }
 

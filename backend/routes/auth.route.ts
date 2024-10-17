@@ -3,6 +3,7 @@ import { Router } from 'express'
 import { signupSchema, verifyEmailSchema } from '../../shared/auth.schema.ts'
 import {
   fetchCurrentUser,
+  resendVerificationEmail,
   signup,
   verifyEmail,
 } from '../controllers/auth.controller.ts'
@@ -19,5 +20,6 @@ router.post(
   validateSchema(verifyEmailSchema),
   verifyEmail,
 )
+router.post('/resend-verification-email', verifyToken, resendVerificationEmail)
 
 export default router

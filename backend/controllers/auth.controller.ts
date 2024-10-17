@@ -102,3 +102,36 @@ export const verifyEmail: RequestHandler = expressAsyncHandler(
     })
   },
 )
+
+export const resendVerificationEmail: RequestHandler = expressAsyncHandler(
+  async (req, res): Promise<void> => {
+    const user = await UserModel.findById(req.userId).select('-password')
+
+    if (!user) {
+      logger.error('User not found', { userId: req.userId })
+      throw new NotFoundError('User not found')
+    }
+
+    if (user.isVerified) {
+      logger.info('User already verified', { email: user.email })
+      throw new BadRequestError('User already verified')
+    }
+
+    const verificationToken = generateVerificationToken()
+
+    user.verificationToken = verificationToken
+    user.verificationTokenExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000)
+
+    await user.save()
+
+    await sendVerificationEmail({
+      email: user.email,
+      verificationToken,
+    })
+
+    res.status(200).json({
+      success: true,
+      message: 'Verification email sent successfully',
+    })
+  },
+)

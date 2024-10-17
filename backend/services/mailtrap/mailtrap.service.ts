@@ -2,7 +2,10 @@ import { MailtrapClient } from 'mailtrap'
 
 import { env } from '../../utils/env.ts'
 import { logger } from '../../utils/logger.ts'
-import { VERIFICATION_EMAIL_TEMPLATE } from './mailtrap.templates.ts'
+import {
+  VERIFICATION_EMAIL_TEMPLATE,
+  WELCOME_EMAIL_TEMPLATE,
+} from './mailtrap.templates.ts'
 
 const TOKEN = env.MAILTRAP_API_TOKEN
 
@@ -78,7 +81,7 @@ export const sendVerificationEmail = async ({
 }
 
 export const sendWelcomeEmail = async (email: string, name: string) => {
-  const emailContent = replacePlaceholders(VERIFICATION_EMAIL_TEMPLATE, {
+  const emailContent = replacePlaceholders(WELCOME_EMAIL_TEMPLATE, {
     name,
     company: env.MAILTRAP_COMPANY_NAME,
   })
