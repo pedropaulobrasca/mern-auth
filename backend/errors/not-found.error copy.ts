@@ -1,7 +1,7 @@
-export class BadRequestError extends Error {
+export class NotFoundError extends Error {
   constructor(
     message: string,
-    public statusCode = 400,
+    public statusCode = 404,
   ) {
     super(message)
     this.name = 'BadRequestError'

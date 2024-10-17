@@ -3,6 +3,7 @@ import { ZodError } from 'zod'
 import { fromError } from 'zod-validation-error'
 
 import { BadRequestError } from '../errors/bad-request.error.ts'
+import { NotFoundError } from '../errors/not-found.error copy.ts'
 import { logger } from './logger.ts'
 
 class ErrorHandler {
@@ -21,6 +22,12 @@ class ErrorHandler {
     if (error instanceof BadRequestError) {
       logger.info('Bad request error', error)
       return responseStream.status(400).json({
+        success: false,
+        message: error.message,
+      })
+    } else if (error instanceof NotFoundError) {
+      logger.info('Not found error', error)
+      return responseStream.status(404).json({
         success: false,
         message: error.message,
       })

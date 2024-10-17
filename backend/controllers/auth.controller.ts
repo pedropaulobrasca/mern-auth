@@ -2,8 +2,10 @@ import type { RequestHandler } from 'express'
 import expressAsyncHandler from 'express-async-handler'
 
 import { BadRequestError } from '../errors/bad-request.error.ts'
+import { NotFoundError } from '../errors/not-found.error copy.ts'
 import { UserDAO } from '../models/dao/user.dao.ts'
 import { UserDTO } from '../models/dto/user.dto.ts'
+import UserModel from '../models/user.model.ts'
 import { sendVerificationEmail } from '../services/mailtrap/mailtrap.service.ts'
 import {
   generateToken,
@@ -48,6 +50,22 @@ export const signup: RequestHandler = expressAsyncHandler(
       success: true,
       message: 'User created successfully',
       data: UserDTO.toJson(newUser),
+    })
+  },
+)
+
+export const fetchCurrentUser: RequestHandler = expressAsyncHandler(
+  async (req, res): Promise<void> => {
+    const user = await UserModel.findById(req.userId).select('-password')
+
+    if (!user) {
+      logger.error('User not found', { userId: req.userId })
+      throw new NotFoundError('User not found')
+    }
+
+    res.status(200).json({
+      success: true,
+      data: UserDTO.toJson(user),
     })
   },
 )
