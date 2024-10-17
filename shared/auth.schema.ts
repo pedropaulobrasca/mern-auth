@@ -14,3 +14,7 @@ export const signupSchema = baseSignupSchema.refine(
     path: ['confirm'],
   },
 )
+
+export const verifyEmailSchema = z.object({
+  verificationToken: z.string().min(6).max(6),
+})

@@ -6,7 +6,10 @@ import { NotFoundError } from '../errors/not-found.error copy.ts'
 import { UserDAO } from '../models/dao/user.dao.ts'
 import { UserDTO } from '../models/dto/user.dto.ts'
 import UserModel from '../models/user.model.ts'
-import { sendVerificationEmail } from '../services/mailtrap/mailtrap.service.ts'
+import {
+  sendVerificationEmail,
+  sendWelcomeEmail,
+} from '../services/mailtrap/mailtrap.service.ts'
 import {
   generateToken,
   generateVerificationToken,
@@ -65,6 +68,36 @@ export const fetchCurrentUser: RequestHandler = expressAsyncHandler(
 
     res.status(200).json({
       success: true,
+      data: UserDTO.toJson(user),
+    })
+  },
+)
+
+export const verifyEmail: RequestHandler = expressAsyncHandler(
+  async (req, res): Promise<void> => {
+    const { verificationToken } = req.body
+
+    const user = await UserModel.findOne({
+      verificationToken,
+      verificationTokenExpiresAt: { $gt: new Date() },
+    }).select('-password')
+
+    if (!user) {
+      logger.error('User not found', { verificationToken })
+      throw new NotFoundError('User not found')
+    }
+
+    user.isVerified = true
+    user.verificationToken = undefined
+    user.verificationTokenExpiresAt = undefined
+
+    await user.save()
+
+    await sendWelcomeEmail(user.email, user.name)
+
+    res.status(200).json({
+      success: true,
+      message: 'Email verified successfully',
       data: UserDTO.toJson(user),
     })
   },

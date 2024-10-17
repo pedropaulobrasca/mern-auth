@@ -76,3 +76,17 @@ export const sendVerificationEmail = async ({
     html: emailContent,
   })
 }
+
+export const sendWelcomeEmail = async (email: string, name: string) => {
+  const emailContent = replacePlaceholders(VERIFICATION_EMAIL_TEMPLATE, {
+    name,
+    company: env.MAILTRAP_COMPANY_NAME,
+  })
+
+  await sendEmail({
+    // to: [{ email }], // TODO: Uncomment this line when ready to send real emails
+    subject: 'Welcome to the team!',
+    category: 'Welcome',
+    html: emailContent,
+  })
+}
