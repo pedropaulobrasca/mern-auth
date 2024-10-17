@@ -1,11 +1,11 @@
 meta {
-  name: health
+  name: me
   type: http
-  seq: 1
+  seq: 2
 }
 
 get {
-  url: {{baseUrl}}/health
+  url: {{baseUrl}}{{baseUrlAuth}}/me
   body: none
   auth: none
 }
