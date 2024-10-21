@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
-import { signupSchema, verifyEmailSchema } from './auth.schema.ts'
+import { signInSchema, signUpSchema, verifyEmailSchema } from './auth.schema.ts'
 
-export type SignupSchema = z.infer<typeof signupSchema>
+export type SignupSchema = z.infer<typeof signUpSchema>
 export type VerifyEmail = z.infer<typeof verifyEmailSchema>
+export type SignInSchema = z.infer<typeof signInSchema>

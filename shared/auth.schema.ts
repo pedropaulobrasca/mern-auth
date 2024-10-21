@@ -7,7 +7,7 @@ export const baseSignupSchema = z.object({
   confirm: z.string().min(6),
 })
 
-export const signupSchema = baseSignupSchema.refine(
+export const signUpSchema = baseSignupSchema.refine(
   (data) => data.password === data.confirm,
   {
     message: 'Passwords do not match',
@@ -17,4 +17,9 @@ export const signupSchema = baseSignupSchema.refine(
 
 export const verifyEmailSchema = z.object({
   verificationToken: z.string().min(6).max(6),
+})
+
+export const signInSchema = baseSignupSchema.pick({
+  email: true,
+  password: true,
 })

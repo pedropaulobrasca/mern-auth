@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs'
 import type { RequestHandler } from 'express'
 import expressAsyncHandler from 'express-async-handler'
 
@@ -15,6 +16,7 @@ import {
   generateVerificationToken,
   setTokenCookie,
 } from '../utils/auth.utils.ts'
+import { env } from '../utils/env.ts'
 import { logger } from '../utils/logger.ts'
 
 const userDao = new UserDAO()
@@ -132,6 +134,49 @@ export const resendVerificationEmail: RequestHandler = expressAsyncHandler(
     res.status(200).json({
       success: true,
       message: 'Verification email sent successfully',
+    })
+  },
+)
+
+export const signIn: RequestHandler = expressAsyncHandler(
+  async (req, res): Promise<void> => {
+    const { email, password } = req.body
+
+    const user = await UserModel.findOne({ email })
+
+    if (!user) {
+      logger.error('User not found', { email })
+      throw new BadRequestError('Invalid credentials')
+    }
+
+    const isPasswordMatch = await bcrypt.compare(password, user.password)
+
+    if (!isPasswordMatch) {
+      logger.error('Invalid credentials', { email })
+      throw new BadRequestError('Invalid credentials')
+    }
+
+    const token = generateToken(user._id.toString())
+    setTokenCookie(res, token)
+
+    user.lastLogin = new Date()
+    await user.save()
+
+    res.status(200).json({
+      success: true,
+      message: 'User logged in successfully',
+      data: UserDTO.toJson(user),
+    })
+  },
+)
+
+export const signOut: RequestHandler = expressAsyncHandler(
+  async (req, res): Promise<void> => {
+    res.clearCookie(env.JWT_COOKIE_NAME)
+
+    res.status(200).json({
+      success: true,
+      message: 'User logged out successfully',
     })
   },
 )
