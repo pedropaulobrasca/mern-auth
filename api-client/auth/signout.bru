@@ -1,19 +1,19 @@
 meta {
-  name: signup
+  name: signout
   type: http
-  seq: 1
+  seq: 5
 }
 
 post {
-  url: {{baseUrl}}{{baseUrlAuth}}/signup
-  body: json
+  url: {{baseUrl}}{{baseUrlAuth}}/signout
+  body: none
   auth: none
 }
 
 body:json {
   {
     "name": "Pedro",
-    "email": "admin133@mern-auth.app",
+    "email": "dssd@mern-auth.app",
     "password": "123asd",
     "confirm": "123asd"
   }

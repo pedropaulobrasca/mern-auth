@@ -1,0 +1,18 @@
+meta {
+  name: signin
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}{{baseUrlAuth}}/signin
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "admin133@mern-auth.app",
+    "password": "123asd"
+  }
+}
