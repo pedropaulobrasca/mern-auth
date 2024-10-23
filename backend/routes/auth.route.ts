@@ -1,12 +1,14 @@
 import { Router } from 'express'
 
 import {
+  forgotPasswordSchema,
   signInSchema,
   signUpSchema,
   verifyEmailSchema,
 } from '../../shared/auth.schema.ts'
 import {
   fetchCurrentUser,
+  forgotPassword,
   resendVerificationEmail,
   signIn,
   signOut,
@@ -29,5 +31,10 @@ router.post(
 router.post('/resend-verification-email', verifyToken, resendVerificationEmail)
 router.post('/signout', verifyToken, signOut)
 router.post('/signin', validateSchema(signInSchema), signIn)
+router.post(
+  '/forgot-password',
+  validateSchema(forgotPasswordSchema),
+  forgotPassword,
+)
 
 export default router

@@ -30,6 +30,7 @@ const envSchema = z.object({
     .refine((salt) => parseInt(salt) >= 10 && parseInt(salt) <= 12),
 
   LOG_LEVEL: z.enum(['error', 'warn', 'info', 'http', 'debug']),
+  CLIENT_URL: z.string().url(),
 })
 
 type Env = z.infer<typeof envSchema>

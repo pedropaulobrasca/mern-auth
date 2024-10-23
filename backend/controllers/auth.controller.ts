@@ -1,3 +1,5 @@
+import { randomBytes } from 'node:crypto'
+
 import bcrypt from 'bcryptjs'
 import type { RequestHandler } from 'express'
 import expressAsyncHandler from 'express-async-handler'
@@ -8,6 +10,7 @@ import { UserDAO } from '../models/dao/user.dao.ts'
 import { UserDTO } from '../models/dto/user.dto.ts'
 import UserModel from '../models/user.model.ts'
 import {
+  sendResetPasswordEmail,
   sendVerificationEmail,
   sendWelcomeEmail,
 } from '../services/mailtrap/mailtrap.service.ts'
@@ -177,6 +180,32 @@ export const signOut: RequestHandler = expressAsyncHandler(
     res.status(200).json({
       success: true,
       message: 'User logged out successfully',
+    })
+  },
+)
+
+export const forgotPassword: RequestHandler = expressAsyncHandler(
+  async (req, res): Promise<void> => {
+    const { email } = req.body
+
+    const user = await UserModel.findOne({ email })
+
+    if (!user) {
+      logger.error('User not found', { email })
+      throw new BadRequestError('Invalid credentials')
+    }
+
+    const resetPasswordToken = randomBytes(16).toString('hex')
+
+    user.resetPasswordToken = resetPasswordToken
+
+    await user.save()
+
+    await sendResetPasswordEmail({ email, resetPasswordToken })
+
+    res.status(200).json({
+      success: true,
+      message: 'Reset password email sent successfully',
     })
   },
 )
