@@ -1,43 +1,47 @@
 import { z } from 'zod'
 
-export const baseSignupSchema = z.object({
-  name: z.string().min(3),
-  email: z.string().email(),
-  password: z.string().min(6),
-  confirm: z.string().min(6),
+const nameSchema = z.string().min(3)
+const emailSchema = z.string().email()
+const passwordSchema = z.string().min(6)
+const tokenSchema = z.string().length(6)
+
+const passwordConfirmationFields = z.object({
+  password: passwordSchema,
+  confirm: passwordSchema,
 })
 
-export const signUpSchema = baseSignupSchema.refine(
-  (data) => data.password === data.confirm,
-  {
+const addPasswordConfirmationRefinement = <T extends z.ZodTypeAny>(schema: T) =>
+  schema.refine((data) => data.password === data.confirm, {
     message: 'Passwords do not match',
     path: ['confirm'],
-  },
+  })
+
+export const signUpSchema = addPasswordConfirmationRefinement(
+  z
+    .object({
+      name: nameSchema,
+      email: emailSchema,
+    })
+    .merge(passwordConfirmationFields),
 )
 
 export const verifyEmailSchema = z.object({
-  verificationToken: z.string().min(6).max(6),
+  verificationToken: tokenSchema,
 })
 
-export const signInSchema = baseSignupSchema.pick({
-  email: true,
-  password: true,
+export const signInSchema = z.object({
+  email: emailSchema,
+  password: passwordSchema,
 })
 
-export const forgotPasswordSchema = baseSignupSchema.pick({
-  email: true,
+export const forgotPasswordSchema = z.object({
+  email: emailSchema,
 })
 
-export const baseResetPasswordSchema = z.object({
-  token: z.string().min(6),
-  password: z.string().min(6),
-  confirm: z.string().min(6),
-})
-
-export const resetPasswordSchema = baseResetPasswordSchema.refine(
-  (data) => data.password === data.confirm,
-  {
-    message: 'Passwords do not match',
-    path: ['confirm'],
-  },
+export const resetPasswordSchema = addPasswordConfirmationRefinement(
+  z
+    .object({
+      token: tokenSchema,
+    })
+    .merge(passwordConfirmationFields),
 )
