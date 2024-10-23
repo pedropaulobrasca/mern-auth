@@ -27,3 +27,17 @@ export const signInSchema = baseSignupSchema.pick({
 export const forgotPasswordSchema = baseSignupSchema.pick({
   email: true,
 })
+
+export const baseResetPasswordSchema = z.object({
+  token: z.string().min(6),
+  password: z.string().min(6),
+  confirm: z.string().min(6),
+})
+
+export const resetPasswordSchema = baseResetPasswordSchema.refine(
+  (data) => data.password === data.confirm,
+  {
+    message: 'Passwords do not match',
+    path: ['confirm'],
+  },
+)

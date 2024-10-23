@@ -30,6 +30,10 @@ userSchema.pre('save', async function (next) {
     this.verificationTokenExpiresAt = calculateExpiresAt(24)
   }
 
+  if (this.resetPasswordToken && !this.resetPasswordExpiresAt) {
+    this.resetPasswordExpiresAt = calculateExpiresAt(1)
+  }
+
   next()
 })
 

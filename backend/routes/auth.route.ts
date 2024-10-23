@@ -2,6 +2,7 @@ import { Router } from 'express'
 
 import {
   forgotPasswordSchema,
+  resetPasswordSchema,
   signInSchema,
   signUpSchema,
   verifyEmailSchema,
@@ -10,6 +11,7 @@ import {
   fetchCurrentUser,
   forgotPassword,
   resendVerificationEmail,
+  resetPassword,
   signIn,
   signOut,
   signup,
@@ -35,6 +37,11 @@ router.post(
   '/forgot-password',
   validateSchema(forgotPasswordSchema),
   forgotPassword,
+)
+router.post(
+  '/reset-password',
+  validateSchema(resetPasswordSchema),
+  resetPassword,
 )
 
 export default router

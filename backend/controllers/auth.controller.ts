@@ -11,6 +11,7 @@ import { UserDTO } from '../models/dto/user.dto.ts'
 import UserModel from '../models/user.model.ts'
 import {
   sendResetPasswordEmail,
+  sendResetSuccessEmail,
   sendVerificationEmail,
   sendWelcomeEmail,
 } from '../services/mailtrap/mailtrap.service.ts'
@@ -206,6 +207,36 @@ export const forgotPassword: RequestHandler = expressAsyncHandler(
     res.status(200).json({
       success: true,
       message: 'Reset password email sent successfully',
+    })
+  },
+)
+
+export const resetPassword: RequestHandler = expressAsyncHandler(
+  async (req, res): Promise<void> => {
+    const { password, token } = req.body
+
+    const user = await UserModel.findOne({
+      resetPasswordToken: token,
+    })
+
+    console.log(user)
+
+    if (!user) {
+      logger.error('User not found', { token })
+      throw new BadRequestError('Invalid token')
+    }
+
+    user.password = password
+    user.resetPasswordToken = undefined
+    user.resetPasswordExpiresAt = undefined
+
+    await user.save()
+
+    await sendResetSuccessEmail(user.email)
+
+    res.status(200).json({
+      success: true,
+      message: 'Password reset successfully',
     })
   },
 )

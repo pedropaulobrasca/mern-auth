@@ -115,3 +115,16 @@ export const sendResetPasswordEmail = async ({
     html: emailContent,
   })
 }
+
+export const sendResetSuccessEmail = async (email: string) => {
+  const emailContent = replacePlaceholders(PASSWORD_RESET_SUCCESS_TEMPLATE, {
+    company: env.MAILTRAP_COMPANY_NAME,
+  })
+
+  await sendEmail({
+    // to: [{ email }], // TODO: Uncomment this line when ready to send real emails
+    subject: 'Password Reset Successfully',
+    category: 'Reset Success',
+    html: emailContent,
+  })
+}
