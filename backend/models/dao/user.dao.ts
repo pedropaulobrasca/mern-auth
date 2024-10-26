@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-import { CreateUser, User } from '../../user.type.ts'
+import { CreateUser, User } from '../../user.types.ts'
 import { UserDTO } from '../dto/user.dto.ts'
 import UserModel from '../user.model.ts'
 

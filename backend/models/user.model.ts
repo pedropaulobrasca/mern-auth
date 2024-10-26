@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 import mongoose from 'mongoose'
 
-import type { User } from '../../shared/user.type.ts'
+import type { User } from '../user.types.ts'
 import { calculateExpiresAt } from '../utils/auth.utils.ts'
 import { env } from '../utils/env.ts'
 

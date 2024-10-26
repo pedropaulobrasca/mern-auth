@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import mongoose from 'mongoose'
 
-import type { User } from '../../../shared/user.type.ts'
+import type { User } from '../../user.types.ts'
 
 export class UserDTO {
   static toJson(
