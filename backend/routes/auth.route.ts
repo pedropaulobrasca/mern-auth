@@ -22,7 +22,7 @@ import { validateSchema } from '../middlewares/validation.middleware.ts'
 
 const router = Router()
 
-router.post('/signup', validateSchema(signUpSchema), signup)
+router.post('/sign-up', validateSchema(signUpSchema), signup)
 router.get('/me', verifyToken, fetchCurrentUser)
 router.post(
   '/verify-email',
@@ -31,8 +31,8 @@ router.post(
   verifyEmail,
 )
 router.post('/resend-verification-email', verifyToken, resendVerificationEmail)
-router.post('/signout', verifyToken, signOut)
-router.post('/signin', validateSchema(signInSchema), signIn)
+router.post('/sign-out', verifyToken, signOut)
+router.post('/sign-in', validateSchema(signInSchema), signIn)
 router.post(
   '/forgot-password',
   validateSchema(forgotPasswordSchema),

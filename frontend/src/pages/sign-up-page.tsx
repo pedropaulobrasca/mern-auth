@@ -1,14 +1,18 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Loader } from "lucide-react"
 
 import { SignUpSchema } from "../../../shared/auth.types"
 import { signUpSchema } from "../../../shared/auth.schema"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAuthStore } from "@/store/auth.store";
+import { Link } from "react-router-dom";
 
 export function SignUpPage() {
+  const {signup, error} = useAuthStore()
   const form = useForm<SignUpSchema>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -20,7 +24,11 @@ export function SignUpPage() {
   })
 
   const onSubmit = async (data: SignUpSchema) => {
-    console.log(data)
+    try {
+      await signup(data)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return <div className="p-8">
@@ -98,14 +106,27 @@ export function SignUpPage() {
                     </FormItem>
                   )}
                 />
+
+                {error && <FormMessage className="text-red-500">{error}</FormMessage>}
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>Submit</Button>
+                <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                  {form.formState.isSubmitting ? <Loader className="animate-spin mx-auto" size={24} /> : "Sign Up"}
+                </Button>
               </div>
             </div>
           </form>
         </Form>
       </CardContent>
+      <CardFooter className="flex flex-col space-y-4">
+        <p className="text-sm text-center text-gray-500">
+          Already have an account? <Link to="/auth/sing-in" className="text-blue-500">Sign In</Link>
+        </p>
+
+        <p className="text-sm text-center text-gray-500">
+          By signing up, you agree to our <Link to="#" className="text-blue-500">Terms of Service</Link> and <Link to="#" className="text-blue-500">Privacy Policy</Link>
+        </p>
+      </CardFooter>
     </Card>
   </div>
 }

@@ -21,4 +21,4 @@ const apiRequest = async<T>(method: "GET" | "POST" | "PUT" | "DELETE", url: stri
   return response.data.data
 }
 
-export const signUp = async (data: SignUpSchema) => apiRequest<User>("PUT", "/auth/sign-up", data)
+export const signUp = async (data: SignUpSchema) => apiRequest<User>("POST", "/auth/sign-up", data)

@@ -27,7 +27,7 @@ app.get('/health', (req, res) => {
   }
 })
 
-app.use('/api/v1/auth', authRouter)
+app.use('/api/auth', authRouter)
 
 app.use(
   (
