@@ -9,10 +9,13 @@ import { signUpSchema } from "../../../shared/auth.schema"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuthStore } from "@/store/auth.store";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export function SignUpPage() {
   const {signup, error} = useAuthStore()
+  const navigate = useNavigate()
+
   const form = useForm<SignUpSchema>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -26,7 +29,10 @@ export function SignUpPage() {
   const onSubmit = async (data: SignUpSchema) => {
     try {
       await signup(data)
+      toast.success("Account created successfully. Please verify your email to continue.")
+      navigate("/auth/verify-email")
     } catch (error) {
+      toast.error("An error occurred while creating your account. Please try again.")
       console.error(error)
     }
   }
