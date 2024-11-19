@@ -1,5 +1,5 @@
-import { signUp } from "@/lib/api"
-import { SignUpSchema } from "../../../shared/auth.types"
+import { resendVerificationEmail, signUp, verifyEmail } from "@/lib/api"
+import { SignUpSchema, VerifyEmailSchema } from "../../../shared/auth.types"
 import { User } from "../../../shared/user.types"
 import { create } from "zustand"
 import axios from "axios"
@@ -12,6 +12,8 @@ type AuthStore = {
   isCheckingAuth: boolean
   signup: (payload: SignUpSchema) => Promise<void>
   setError: (error: string | null) => void
+  verifyEmail: (payload: VerifyEmailSchema) => Promise<void>
+  resendVerificationEmail: () => Promise<void>
 }
 
 const handleError = (error: unknown): string => {
@@ -50,4 +52,31 @@ export const useAuthStore = create<AuthStore>((set) => ({
       set({ isLoading: false })
     }
   },
+
+  verifyEmail: async (payload: VerifyEmailSchema) => {
+    set({ isLoading: true, error: null })
+
+    try {
+      const user = await verifyEmail(payload)
+      set({ user, isAuthenticated: true, error: null })
+    } catch (error: unknown) {
+      set({ error: handleError(error) })
+      throw error
+    } finally {
+      set({ isLoading: false })
+    }
+  },
+
+  resendVerificationEmail: async () => {
+    set({ isLoading: true, error: null })
+
+    try {
+      await resendVerificationEmail()
+    } catch (error: unknown) {
+      set({ error: handleError(error) })
+      throw error
+    } finally {
+      set({ isLoading: false })
+    }
+  }
 }))
