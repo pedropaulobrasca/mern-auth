@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { MailtrapClient } from 'mailtrap'
 
 import { env } from '../../utils/env.ts'

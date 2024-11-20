@@ -1,10 +1,11 @@
-import { Route, Routes } from "react-router-dom"
-import { HomePage } from "../pages/home-page"
-import { SignUpPage } from "../pages/sign-up-page"
-import { SignInPage } from "../pages/sign-in-page"
-import { EmailVerificationPage } from "../pages/email-verification-page"
-import { ForgotPasswordPage } from "../pages/forgot-password-page"
-import { ResetPasswordPage } from "../pages/reset-password-page"
+import { Route, Routes } from 'react-router-dom'
+
+import { EmailVerificationPage } from '../pages/email-verification-page'
+import { ForgotPasswordPage } from '../pages/forgot-password-page'
+import { HomePage } from '../pages/home-page'
+import { ResetPasswordPage } from '../pages/reset-password-page'
+import { SignInPage } from '../pages/sign-in-page'
+import { SignUpPage } from '../pages/sign-up-page'
 
 export function AuthRoutes() {
   return (

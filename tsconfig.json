@@ -1,12 +1,12 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "_version": "22.0.0",
-
   "compilerOptions": {
-    "lib": ["es2023"],
+    "lib": [
+      "es2023"
+    ],
     "module": "node16",
     "target": "es2022",
-
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -14,11 +14,18 @@
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "noEmit": true,
-
-    "rootDirs": ["./backend", "./shared"],
+    "rootDirs": [
+      "./backend",
+      "./shared"
+    ],
     "outDir": "./dist",
   },
-
-  "include": ["./backend/**/*.ts", "./shared/**/*.ts"],
-  "exclude": ["node_modules", "frontend"]
+  "include": [
+    "./backend/**/*.ts",
+    "./shared/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "frontend"
+  ]
 }

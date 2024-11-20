@@ -1,8 +1,15 @@
-import { resendVerificationEmail, signUp, signOut, verifyEmail } from "@/lib/api"
-import { SignUpSchema, VerifyEmailSchema } from "../../../shared/auth.types"
-import { User } from "../../../shared/user.types"
-import { create } from "zustand"
-import axios from "axios"
+import axios from 'axios'
+import { create } from 'zustand'
+
+import {
+  resendVerificationEmail,
+  signOut,
+  signUp,
+  verifyEmail,
+} from '@/lib/api'
+
+import { SignUpSchema, VerifyEmailSchema } from '../../../shared/auth.types'
+import { User } from '../../../shared/user.types'
 
 type AuthStore = {
   user: User | null
@@ -19,14 +26,14 @@ type AuthStore = {
 
 const handleError = (error: unknown): string => {
   if (error instanceof Error) {
-    return error.message || "An error occurred"
+    return error.message || 'An error occurred'
   }
 
   if (axios.isAxiosError(error)) {
     return error.response?.data?.message || error.message
   }
 
-  return "An error occurred"
+  return 'An error occurred'
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({

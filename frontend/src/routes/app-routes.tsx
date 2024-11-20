@@ -1,5 +1,6 @@
-import { HomePage } from "@/pages/home-page"
-import { Route, Routes } from "react-router-dom"
+import { Route, Routes } from 'react-router-dom'
+
+import { HomePage } from '@/pages/home-page'
 
 export function AppRoutes() {
   return (
