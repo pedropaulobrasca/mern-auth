@@ -31,7 +31,7 @@ export function EmailVerificationPage() {
     try {
       await verifyEmail(data)
       toast.success("Email verified successfully. Please login to continue.")
-      navigate("/auth/sign-in")
+      navigate("/app")
     } catch (error) {
       toast.error("An error occurred while verifying your email. Please try again.")
       console.error(error)

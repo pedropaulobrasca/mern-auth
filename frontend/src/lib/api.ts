@@ -26,3 +26,5 @@ export const signUp = async (data: SignUpSchema) => apiRequest<User>("POST", "/a
 export const verifyEmail = async (data: VerifyEmailSchema) => apiRequest<User>("POST", "/auth/verify-email", data)
 
 export const resendVerificationEmail = async () => apiRequest<User>("POST", "/auth/resend-verification-email")
+
+export const signOut = async () => apiRequest<null>("POST", "/auth/sign-out")
