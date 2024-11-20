@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { REGEXP_ONLY_DIGITS } from 'input-otp'
 import { Loader } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -19,10 +20,13 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from '@/components/ui/input-otp'
 import { useAuthStore } from '@/store/auth.store'
 
 import { verifyEmailSchema } from '../../../shared/auth.schema'
@@ -51,7 +55,6 @@ export function EmailVerificationPage() {
       toast.error(
         'An error occurred while verifying your email. Please try again.',
       )
-      console.error(error)
 
       if (
         error instanceof Error &&
@@ -105,9 +108,22 @@ export function EmailVerificationPage() {
                     disabled={form.formState.isSubmitting}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Verification Token</FormLabel>
                         <FormControl>
-                          <Input placeholder="123456" {...field} />
+                          <InputOTP
+                            maxLength={6}
+                            pattern={REGEXP_ONLY_DIGITS}
+                            disabled={form.formState.isSubmitting}
+                            {...field}
+                          >
+                            <InputOTPGroup className="flex w-full">
+                              <InputOTPSlot index={0} className="flex-1" />
+                              <InputOTPSlot index={1} className="flex-1" />
+                              <InputOTPSlot index={2} className="flex-1" />
+                              <InputOTPSlot index={3} className="flex-1" />
+                              <InputOTPSlot index={4} className="flex-1" />
+                              <InputOTPSlot index={5} className="flex-1" />
+                            </InputOTPGroup>
+                          </InputOTP>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
