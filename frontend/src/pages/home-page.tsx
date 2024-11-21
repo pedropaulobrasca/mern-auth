@@ -72,13 +72,13 @@ export function HomePage() {
         <CardContent>
           <div className="flex flex-col gap-2">
             <p>
-              Login Since:{' '}
+              Account created:{' '}
               <span className="text-muted-foreground">
                 {moment(user?.createdAt).fromNow()}
               </span>
             </p>
             <p>
-              Last Password Change:{' '}
+              Last login:{' '}
               <span className="text-muted-foreground">
                 {moment(user?.updatedAt).fromNow()}
               </span>
