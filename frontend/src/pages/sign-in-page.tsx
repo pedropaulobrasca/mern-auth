@@ -131,6 +131,12 @@ export function SignInPage() {
               Sign Up
             </Link>
           </p>
+          <p className="text-sm text-center text-gray-500">
+            Forgot your password?{' '}
+            <Link to="/auth/forgot-password" className="text-blue-500">
+              Reset Password
+            </Link>
+          </p>
         </CardFooter>
       </Card>
     </div>

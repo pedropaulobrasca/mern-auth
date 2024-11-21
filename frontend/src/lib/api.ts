@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 
-import { SignInSchema, SignUpSchema, VerifyEmailSchema } from '../../../shared/auth.types'
+import { ForgotPasswordSchema, SignInSchema, SignUpSchema, VerifyEmailSchema } from '../../../shared/auth.types'
 import { User } from '../../../shared/user.types'
 
 const axiosInstance = axios.create({
@@ -40,3 +40,6 @@ export const currentUser = async () => apiRequest<User>('GET', '/auth/me')
 
 export const signIn = async (data: SignInSchema) =>
   apiRequest<User>('POST', '/auth/sign-in', data)
+
+export const forgotPassword = async (data: ForgotPasswordSchema) =>
+  apiRequest<User>('POST', '/auth/forgot-password', data)

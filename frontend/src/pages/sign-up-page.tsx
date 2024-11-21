@@ -167,7 +167,7 @@ export function SignUpPage() {
         <CardFooter className="flex flex-col space-y-4">
           <p className="text-sm text-center text-gray-500">
             Already have an account?{' '}
-            <Link to="/auth/sing-in" className="text-blue-500">
+            <Link to="/auth/sign-in" className="text-blue-500">
               Sign In
             </Link>
           </p>
