@@ -4,12 +4,13 @@ import { create } from 'zustand'
 import {
   currentUser,
   resendVerificationEmail,
+  signIn,
   signOut,
   signUp,
   verifyEmail,
 } from '@/lib/api'
 
-import { SignUpSchema, VerifyEmailSchema } from '../../../shared/auth.types'
+import { SignInSchema, SignUpSchema, VerifyEmailSchema } from '../../../shared/auth.types'
 import { User } from '../../../shared/user.types'
 
 type AuthStore = {
@@ -24,6 +25,7 @@ type AuthStore = {
   resendVerificationEmail: () => Promise<void>
   signOut: () => Promise<void>
   currentUser: () => Promise<void>
+  signIn: (payload: SignInSchema) => Promise<void>
 }
 
 const handleError = (error: unknown): string => {
@@ -116,6 +118,20 @@ export const useAuthStore = create<AuthStore>((set) => ({
       } else {
         set({ error: handleError(error) })
       }
+      throw error
+    } finally {
+      set({ isLoading: false })
+    }
+  },
+
+  signIn: async (payload: SignInSchema) => {
+    set({ isLoading: true, error: null })
+
+    try {
+      const user = await signIn(payload)
+      set({ user, isAuthenticated: true, error: null })
+    } catch (error: unknown) {
+      set({ error: handleError(error), isAuthenticated: false })
       throw error
     } finally {
       set({ isLoading: false })
