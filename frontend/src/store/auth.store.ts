@@ -2,6 +2,7 @@ import axios from 'axios'
 import { create } from 'zustand'
 
 import {
+  currentUser,
   resendVerificationEmail,
   signOut,
   signUp,
@@ -22,6 +23,7 @@ type AuthStore = {
   verifyEmail: (payload: VerifyEmailSchema) => Promise<void>
   resendVerificationEmail: () => Promise<void>
   signOut: () => Promise<void>
+  currentUser: () => Promise<void>
 }
 
 const handleError = (error: unknown): string => {
@@ -96,6 +98,24 @@ export const useAuthStore = create<AuthStore>((set) => ({
       set({ user: null, isAuthenticated: false, error: null })
     } catch (error: unknown) {
       set({ error: handleError(error) })
+      throw error
+    } finally {
+      set({ isLoading: false })
+    }
+  },
+
+  currentUser: async () => {
+    set({ isLoading: true, isCheckingAuth: true, error: null })
+
+    try {
+      const user = await currentUser()
+      set({ user, isAuthenticated: true, isCheckingAuth: false, error: null })
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        set({ isAuthenticated: false, isCheckingAuth: false, error: null })
+      } else {
+        set({ error: handleError(error) })
+      }
       throw error
     } finally {
       set({ isLoading: false })

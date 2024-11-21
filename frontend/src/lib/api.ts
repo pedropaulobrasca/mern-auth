@@ -35,3 +35,5 @@ export const resendVerificationEmail = async () =>
   apiRequest<User>('POST', '/auth/resend-verification-email')
 
 export const signOut = async () => apiRequest<null>('POST', '/auth/sign-out')
+
+export const currentUser = async () => apiRequest<User>('GET', '/auth/me')
