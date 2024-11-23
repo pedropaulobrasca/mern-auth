@@ -30,7 +30,7 @@ app.get('/health', (req, res) => {
 app.use((req, res, next) => {
   setTimeout(() => {
     next()
-  }, 3000)
+  }, 0)
 })
 
 app.use('/api/auth', authRouter)

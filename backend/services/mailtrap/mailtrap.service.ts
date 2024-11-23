@@ -105,7 +105,7 @@ export const sendResetPasswordEmail = async ({
   resetPasswordToken: string
 }) => {
   const emailContent = replacePlaceholders(PASSWORD_RESET_REQUEST_TEMPLATE, {
-    resetURL: `${env.CLIENT_URL}/reset-password/${resetPasswordToken}`,
+    resetURL: `${env.CLIENT_URL}/auth/reset-password/${resetPasswordToken}`,
     company: env.MAILTRAP_COMPANY_NAME,
   })
 

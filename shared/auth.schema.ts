@@ -3,7 +3,7 @@ import { z } from 'zod'
 const nameSchema = z.string().min(3)
 const emailSchema = z.string().email()
 const passwordSchema = z.string().min(6)
-const tokenSchema = z.string().length(6)
+const tokenSchema = z.string()
 
 const passwordConfirmationFields = z.object({
   password: passwordSchema,

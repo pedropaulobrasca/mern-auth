@@ -55,9 +55,7 @@ export function SignInPage() {
       <Card className="w-[400px]">
         <CardHeader>
           <CardTitle>Welcome Back</CardTitle>
-          <CardDescription>
-            Please sign in to your account.
-          </CardDescription>
+          <CardDescription>Please sign in to your account.</CardDescription>
         </CardHeader>
 
         <CardContent>
