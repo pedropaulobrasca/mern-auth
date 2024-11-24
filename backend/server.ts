@@ -34,7 +34,7 @@ app.use('/api/auth', authRouter)
 if (env.NODE_ENV !== 'production') {
   logger.info('Serving static files from frontend/dist')
   const dirname = path.resolve()
-  app.use(express.static(path.join(dirname, '../frontend/dist')))
+  app.use(express.static(path.join(dirname, '/frontend/dist')))
   app.get('*', (req, res) => {
     res.sendFile(path.join(dirname, 'frontend', 'dist', 'index.html'))
   })
