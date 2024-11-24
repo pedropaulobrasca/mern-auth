@@ -31,10 +31,11 @@ app.get('/health', (req, res) => {
 
 app.use('/api/auth', authRouter)
 
-if (env.NODE_ENV !== 'production') {
-  logger.info('Serving static files from frontend/dist')
+if (env.NODE_ENV === 'production') {
   const dirname = path.resolve()
-  app.use(express.static(path.join(dirname, '/frontend/dist')))
+  logger.info('Serving static files from frontend/dist')
+  logger.info(`dirname: ${dirname}`)
+  app.use(express.static(path.join(dirname, '../frontend/dist')))
   app.get('*', (req, res) => {
     res.sendFile(path.join(dirname, 'frontend', 'dist', 'index.html'))
   })
