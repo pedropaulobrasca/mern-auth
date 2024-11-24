@@ -6,12 +6,12 @@
   "type": "module",
   "scripts": {
     "dev": "tsx --watch backend/server.ts",
-    "build": "tsup backend/server.ts --format esm --dts --minify",
+    "build": "npm install && tsup backend/server.ts --format esm --dts --minify && npm install --prefix frontend && npm run build --prefix frontend",
     "start": "node dist/server.js",
     "lint": "eslint . --fix"
   },
   "keywords": [],
-  "author": "",
+  "author": "Pedro Brasca",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader } from 'lucide-react'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -25,7 +26,6 @@ import { useAuthStore } from '@/store/auth.store'
 
 import { resetPasswordSchema } from '../../../shared/auth.schema'
 import { ResetPasswordSchema } from '../../../shared/auth.types'
-import { useEffect } from 'react'
 
 export function ResetPasswordPage() {
   const { resetPassword, error, setError } = useAuthStore()
