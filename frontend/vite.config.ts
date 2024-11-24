@@ -11,7 +11,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/api': 'https://g6yyayyput.us-east-1.awsapprunner.com',
+      '/api': 'http://localhost:3333',
     },
   },
 })
