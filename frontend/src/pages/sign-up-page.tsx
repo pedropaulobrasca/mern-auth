@@ -26,9 +26,10 @@ import { useAuthStore } from '@/store/auth.store'
 
 import { signUpSchema } from '../../../shared/auth.schema'
 import { SignUpSchema } from '../../../shared/auth.types'
+import { useEffect } from 'react'
 
 export function SignUpPage() {
-  const { signup, error } = useAuthStore()
+  const { signup, error, setError } = useAuthStore()
   const navigate = useNavigate()
 
   const form = useForm<SignUpSchema>({
@@ -55,6 +56,10 @@ export function SignUpPage() {
       console.error(error)
     }
   }
+
+  useEffect(() => {
+    setError(null)
+  }, [setError, location.pathname])
 
   return (
     <div className="p-8">

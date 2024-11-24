@@ -26,9 +26,10 @@ import { useAuthStore } from '@/store/auth.store'
 
 import { forgotPasswordSchema } from '../../../shared/auth.schema'
 import { ForgotPasswordSchema } from '../../../shared/auth.types'
+import { useEffect } from 'react'
 
 export function ForgotPasswordPage() {
-  const { forgotPassword, error } = useAuthStore()
+  const { forgotPassword, error, setError } = useAuthStore()
   const navigate = useNavigate()
 
   const form = useForm<ForgotPasswordSchema>({
@@ -48,6 +49,10 @@ export function ForgotPasswordPage() {
       console.error(error)
     }
   }
+
+  useEffect(() => {
+    setError(null)
+  }, [setError, location.pathname])
 
   return (
     <div className="p-8">

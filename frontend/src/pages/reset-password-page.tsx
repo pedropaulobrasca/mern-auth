@@ -25,9 +25,10 @@ import { useAuthStore } from '@/store/auth.store'
 
 import { resetPasswordSchema } from '../../../shared/auth.schema'
 import { ResetPasswordSchema } from '../../../shared/auth.types'
+import { useEffect } from 'react'
 
 export function ResetPasswordPage() {
-  const { resetPassword, error } = useAuthStore()
+  const { resetPassword, error, setError } = useAuthStore()
   const navigate = useNavigate()
   const { token } = useParams<{ token: string }>()
 
@@ -51,6 +52,10 @@ export function ResetPasswordPage() {
       console.error('Error resetting password:', error)
     }
   }
+
+  useEffect(() => {
+    setError(null)
+  }, [setError, location.pathname])
 
   return (
     <div className="p-8">

@@ -33,7 +33,8 @@ import { verifyEmailSchema } from '../../../shared/auth.schema'
 import { VerifyEmailSchema } from '../../../shared/auth.types'
 
 export function EmailVerificationPage() {
-  const { verifyEmail, resendVerificationEmail, error } = useAuthStore()
+  const { verifyEmail, resendVerificationEmail, error, setError } =
+    useAuthStore()
   const [isCoolDown, setIsCoolDown] = useState(false)
   const [coolDownTime, setCoolDownTime] = useState(0)
   const [userAlreadyVerified, setUserAlreadyVerified] = useState(false)
@@ -86,6 +87,10 @@ export function EmailVerificationPage() {
       setIsCoolDown(false)
     }
   }, [coolDownTime])
+
+  useEffect(() => {
+    setError(null)
+  }, [setError, location.pathname])
 
   return (
     <div className="p-8">

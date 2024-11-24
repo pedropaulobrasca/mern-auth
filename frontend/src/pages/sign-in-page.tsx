@@ -26,9 +26,10 @@ import { useAuthStore } from '@/store/auth.store'
 
 import { signInSchema } from '../../../shared/auth.schema'
 import { SignInSchema } from '../../../shared/auth.types'
+import { useEffect } from 'react'
 
 export function SignInPage() {
-  const { signIn, error } = useAuthStore()
+  const { signIn, error, setError } = useAuthStore()
   const navigate = useNavigate()
 
   const form = useForm<SignInSchema>({
@@ -49,6 +50,10 @@ export function SignInPage() {
       console.error(error)
     }
   }
+
+  useEffect(() => {
+    setError(null)
+  }, [setError, location.pathname])
 
   return (
     <div className="p-8">

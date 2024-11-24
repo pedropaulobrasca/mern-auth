@@ -1,6 +1,6 @@
 import { Activity, Loader2, LogOut, User } from 'lucide-react'
 import moment from 'moment'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
@@ -15,7 +15,7 @@ import {
 import { useAuthStore } from '@/store/auth.store'
 
 export function HomePage() {
-  const { user, signOut } = useAuthStore()
+  const { user, signOut, setError } = useAuthStore()
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
@@ -37,6 +37,10 @@ export function HomePage() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    setError(null)
+  }, [setError, location.pathname])
 
   return (
     <div className="flex flex-col gap-4">
